@@ -1,0 +1,5 @@
+# encoding = utf-8
+
+吴江东恒盛国际大酒店, suzhou_jiangsu_2316
+苏州同里湖度假村二期, suzhou_jiangsu_9685
+吴江汇丰国际花园酒店, suzhou_jiangsu_3133

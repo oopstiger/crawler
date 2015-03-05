@@ -1,0 +1,3 @@
+
+def fetch(args):
+    pass
