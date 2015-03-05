@@ -30,9 +30,11 @@ def fetch_latest(target, history):
     try:
         mod = importlib.import_module('%s.fetch' % target)
         fetch = mod.fetch
+    except ImportError:
+        logging.error("** Crawler \'%s\' not found!" % target)
+        return None
     except Exception, e:
-        logging.error(str(e))
-        logging.error("Crawler for \'%s\' is not found!" % target)
+        logging.error("** Something is wrong with crawler \'%s\': %s" % (target, str(e)))
         return None
 
     hotels = load_hotels(target)
@@ -44,7 +46,7 @@ def fetch_latest(target, history):
                 continue
         except Exception, e:
             # ignore errors
-            logging.error("Crawler [%s] exception: " + str(e))
+            logging.error("** Crawler [%s] exception: %s" % (target, str(e)))
             continue
 
         hotel_key = target + '-' + '-'.join(hotel_arg)
@@ -130,7 +132,12 @@ if __name__ == "__main__":
         print("OPTIONS may be:")
         print("  -t <PERIOD>   period of crawling, in seconds. Default is 3600.")
         print("  -g <GATEWAR>  address of data gateway server. Default is localhost:8086")
+        print("  -l <LEVEL>    log level, within range [0, 50]. Default is 30(warning).")
         exit(1)
+
+    # set log level
+    lvl = int(getarg(sys.argv, '-l', "30"))
+    logging.getLogger().setLevel(lvl)
 
     target = sys.argv[1]
     if target not in crawlers:
